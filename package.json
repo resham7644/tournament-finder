@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/resham7644/tournament-finder/issues"
   },
-  "homepage": "https://github.com/resham7644/tournament-finder#readme"
+  "homepage": "https://github.com/resham7644/tournament-finder#readme",
+  "dependencies": {
+    "cloudinary": "^2.5.1",
+    "express": "^4.21.2",
+    "mysql": "^2.18.1"
+  }
 }
