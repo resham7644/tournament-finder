@@ -1,0 +1,22 @@
+{
+  "name": "project-sport-tournament",
+  "version": "1.0.0",
+  "description": "Tournament Finder is a web application that helps users discover tournaments near their location. It offers dedicated dashboards for players and organizations, making it easy to manage and participate in tournaments. The platform is built with Node.js, ensuring fast and scalable performance.",
+  "main": "mailsend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/resham7644/tournament-finder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/resham7644/tournament-finder/issues"
+  },
+  "homepage": "https://github.com/resham7644/tournament-finder#readme"
+}
