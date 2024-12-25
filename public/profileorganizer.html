@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./index.css">  
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <title>Profile</title>
+
+    <script>
+      $(document).ready(function()
+      {
+        
+        ///////
+        if(localStorage.getItem("activeUser")==null)
+      {
+        location.href="index.html";
+        return;
+      }
+      else{
+       // alert(localStorage.getItem("activeUser"));
+        $("#txtmail").val(localStorage.getItem("activeUser")).attr("readonly",true);
+        $("#activeUser").html(localStorage.getItem("activeUser"));
+      }
+
+
+        $("#btn-fetch-profile").click(function()
+        {
+          let email = $("#txtmail").val();
+          let obj={
+                type:"get",
+                url:"/fetch-profile",
+                data:{
+                    txtmail:email
+                }
+            }
+            $.ajax(obj).done(function(responseAry){
+
+                  //alert(JSON.stringify(responseAry));
+                  if(responseAry.length==0)
+                      {
+                          alert("No Data Available");
+                          $("#btn-update-profile").prop("disabled", true);
+                          return;
+                      }
+                  alert("Email already Saved");
+                  $("#btn-save-profile").prop("disabled", true);
+                  $("#txtorg").val(responseAry[0].organization);
+
+                 // let partsAry=responseAry[0].dob.split("T");//retuen array
+                 // alert(partsAry[0]);
+                  $("#txtnumber").val(responseAry[0].number);
+
+                  $("#txtaddress").val(responseAry[0].address);
+
+                  $("#txtcity").val(responseAry[0].city);
+  
+                  $("#txtproof").val(responseAry[0].proof);
+                  $("#txt-tour").val(responseAry[0].prev_tour);
+
+                  $("#selgames").val(responseAry[0].Games);
+
+                  //let selproof = JSON.parse(responseAry[0].proof);
+                  //alert[responseAry[0].proof];
+                 // $("#txtproof").val(responseAry[0].proof);
+
+                  //let gamesArray = JSON.parse(responseAry[0].Games);
+                  //alert(gamesArray[0]);
+                  
+                  }).fail(function (err) {
+                    alert("Error: " + err);
+
+                  
+
+                  }).fail(function(err){
+
+                  alert(err);
+                })
+
+        });
+      })
+    </script>
+</head>
+<body>
+  <!--Nav Bar-->
+  <nav class="navbar navbar-expand-lg" style="background-color: #01579B;">
+    <div class="container-fluid">
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="#">
+          <img src="./uploads/logo22.png" alt="" width="40px" height="40px" style="margin-right: 10px;">
+            
+            Tourney
+        </a>
+
+        <!-- Collapsible Navbar Content -->
+        <div class="collapse navbar-collapse">
+            <!-- Navigation Links -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                
+            </ul>
+            <!-- Right-Aligned Buttons -->
+            <div class="d-flex">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">User :
+                    <span id="activeUser"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</nav>
+  <!--/////////////////////////-->
+
+    <center>
+      <br>
+    <h1>Organizer Profile</h1>
+    </center>
+    <div class="container">
+    <form class="row g-3" enctype="multipart/form-data" method="post">
+    
+        <div class="col-md-6">
+          <label for="txtmail" class="form-label">Email</label>
+          <input type="email" class="form-control" id="txtmail" name="txtmail">
+        </div>
+        <div class="col-1">
+          <label></label>
+            <button type="button" class="btn btn-primary form-control" id="btn-fetch-profile">Search</button>
+          </div>
+          
+        <div class="row">
+        <div class="col-md-6">
+          <label for="txtorg" class="form-label">Organization</label>
+          <input type="text" class="form-control" id="txtorg" name="txtorg">
+        </div>
+        <div class="col-md-6">
+            <label for="txtnumber" class="form-label">Contact Number</label>
+            <input type="tel" class="form-control" id="txtnumber" name="txtnumber">
+          </div>
+    </div>
+        <div class="col-6">
+          <label for="inputAddress" class="form-label">Address</label>
+          <input type="text" class="form-control" id="txtaddress" placeholder="1234 Main St" name="txtaddress">
+        </div>
+        
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">City</label>
+          <input type="text" class="form-control" id="txtcity" name="txtcity">
+        </div>
+        
+        <div class="col-md-6">
+            <label  class="form-label">ID Proof</label>
+            <select  class="form-select" name="selproof" id="txtproof">
+              <option selected>Choose Identity Proof</option>
+              <option>Adhaar Card</option>
+              <option>Voter Card</option>
+              <option>Pan Card</option>
+            </select>
+        </div> 
+            <div class="col-md-4">
+                <label for="inputZip" class="form-label">Upload File</label>
+                <input type="file" class="form-control" id="inputZip" name="proofpic">
+              </div>
+        <div class="col-md-6">
+                <label class="form-label">Deals in Sports</label>
+                <select id="selgames" class="form-select" name="selgame" multiple>
+                  <option selected>Choose Sports</option>
+                  <option>Cricket</option>l̥ō
+                  <option>Hockey</option>
+                  <option>Badminton</option>
+                </select>
+            </div>   
+            <div class="col-md-6">
+                <label class="form-label">Previous Tournaments Hosted</label>
+                <textarea class="form-control" name="txttour" id="txt-tour"></textarea>
+              </div>
+
+        <div class="col-12">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              Check me out
+            </label>
+          </div>
+        </div>
+        <div class="col-2">
+          <button type="submit" class="btn btn-primary" formaction="/save-profile" id="btn-save-profile">Save</button>
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary" formaction="/update-profile" id="btn-update-profile">Update</button>
+          </div>
+      </form>
+    </div>
+    <br><br>
+    <hr>
+    <!-- Footer 2-->
+
+<div class="container">
+  <footer class="py-5">
+    <div class="row">
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+          <li class="nav-item mb-2"><a href="#services" class="nav-link p-0 text-body-secondary">Features</a></li>
+          <li class="nav-item mb-2"><a href="#reachUs" class="nav-link p-0 text-body-secondary">Reach Us</a></li>
+          <li class="nav-item mb-2"><a href="#aboutUs" class="nav-link p-0 text-body-secondary">About Us</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+        </ul>
+      </div>
+  
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Services</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Explore Tournaments</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Host Tournaments</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Win Prizes</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Certifications</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Secure SignUp/Login</a></li>
+        </ul>
+      </div>
+  
+      
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Developers</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Resham Singh</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Akashdeep Singh</a></li>
+        
+        </ul>
+      </div>
+  
+  
+      <div class="col-md-5 offset-md-1 mb-3">
+        <form>
+          <h5>Subscribe to our newsletter</h5>
+          <p>Monthly digest of what's new and exciting from us.</p>
+          <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+            <label for="newsletter1" class="visually-hidden">Email address</label>
+            <input id="newsletter1" type="email" class="form-control" placeholder="Email address" >
+            <div class="invalid-feedback">
+              Please enter a valid email address.
+          </div>
+            <button class="btn btn-primary" type="button" id="btn-subscribe">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+      <p>© 2024 Company, Inc. All rights reserved.</p>
+      <ul class="list-unstyled d-flex">
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </div>
+  </footer>
+  </div>
+  
+  <!----------------------------------------------->
+
+
+</body>
+</html>

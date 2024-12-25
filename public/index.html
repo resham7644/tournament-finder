@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sport Tournament</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./index.css">
+
+
+
+     <!-- Bootstrap JavaScript (needed for modal functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+    <script
+    src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+    crossorigin="anonymous"></script>
+
+    <link rel="JavaScript" href="">
+    <script>
+      $(document).ready(function(){
+
+        $("#txtmail").blur(function () {
+        let email = $(this).val().trim();
+        if (!email) {
+            $(this).addClass('is-invalid').removeClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove(); // Clear previous error
+            $(this).after('<div class="invalid-feedback">Email is required.</div>');
+        } else if (!validateEmail(email)) {
+            $(this).addClass('is-invalid').removeClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove();
+            $(this).after('<div class="invalid-feedback">Please enter a valid email address.</div>');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove(); // Clear error
+        }
+    });
+
+    $('#txtpwd').on('blur', function () {
+        let password = $(this).val().trim();
+        if (!password) {
+            $(this).addClass('is-invalid').removeClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove();
+            $(this).after('<div class="invalid-feedback">Password is required.</div>');
+        } else if (password.length < 6) {
+            $(this).addClass('is-invalid').removeClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove();
+            $(this).after('<div class="invalid-feedback">Password must be at least 6 characters long.</div>');
+        } else {
+            $(this).removeClass('is-invalid').addClass('is-valid');
+            $(this).siblings('.invalid-feedback').remove();
+        }
+    });
+
+    // User Type validation on click
+    $('#btn-signup').click(function () {
+       // Prevent form submission
+        let userType = $('input[name="user"]:checked').val();
+
+        if (!userType) {
+            alert("Please select a user type.");
+        } else if (validateAll()) {
+          //  alert("Validation successful! Proceeding with AJAX request...");
+            // Call your AJAX request here
+            let email = $("#txtmail").val();
+                let pass = $("#txtpwd").val();
+                let user = $('input[name="user"]:checked').val();
+
+                let obj = {
+                  type : "get",
+                  url : "/signup",
+                  data : {
+                    txtmail:email,
+                    txtpwd:pass,
+                    utype:user
+                  }
+                }
+                $.ajax(obj)
+                .done(function(response){
+                    alert(response);
+                    signupMail(email);
+                    resetSignupForm();
+                })
+                .fail(function(err) {
+                     console.log("Error details:", err.message);
+                     alert("Server Error");
+                })
+        }
+    });
+
+    function signupMail(mail){
+          let email = mail;
+          let subject = "Welcome to Tourney";
+          let message = "Hello "+mail+" <br>You have signed up successfully";
+          let obj = {
+            type : "get",
+            url : "/signup-email",
+            data : {
+              toMail:email,
+              subMail:subject,
+              msgMail:message
+            }
+          }
+          $.ajax(obj).done(function(response){
+                  alert(response);
+                }).fail(function(err){
+                  alert("Server Error");
+                })
+        }
+
+        function resetSignupForm() {
+    $("#txtmail").val('');
+    $("#txtpwd").val('');
+    $('#signupModal input[type="radio"]').prop('checked', false);
+}
+
+
+    function validateEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    function validateAll() {
+        $('#txtmail').blur(); // Trigger email validation
+        $('#txtpwd').blur();  // Trigger password validation
+
+        let isEmailValid = !$('#txtmail').hasClass('is-invalid');
+        let isPasswordValid = !$('#txtpwd').hasClass('is-invalid');
+        let isUserTypeSelected = $('input[name="user"]:checked').length > 0;
+
+        if (!isUserTypeSelected) {
+            alert("Please select a user type.");
+            return false;
+        }
+
+        return isEmailValid && isPasswordValid && isUserTypeSelected;
+    }
+
+        //1. sign up
+
+           //   $("#btn-signup").click(function(){
+                
+                  
+          //    });
+
+          $("#btn-login").click(function()
+        {
+          let email = $("#login-txtmail").val();
+          let pass = $("#login-txtpwd").val();
+          let obj = {
+            type : "get",
+            url : "/login",
+            data : {
+              txtmail:email,
+              txtpwd:pass
+            }
+          }
+          $.ajax(obj).done(function(response){
+            let resp = response.data;
+          //  alert(JSON.stringify(response));
+            if (response.length==1) {
+             //   alert("User: " + response[0].User);
+                if (response[0].User === "Organization") {
+                    location.href = "dashorganizer.html";
+                    localStorage.setItem("activeUser",email);
+                }else if(response[0].User === "Player"){
+                  location.href = "dashplayer.html"
+                  localStorage.setItem("activeUser",email);
+                }
+            } else {
+                alert("Invalid Credentials");
+            }
+            $("#login-txtmail").val('');
+            $("#login-txtpwd").val('');
+          }).fail(function(err){
+            alert("Server Error");
+          })
+        });
+        $("#btn-mail").click(function(){
+          let email = $("#toMail").val();
+          let subject = $("#subMail").val();
+          let message = $("#msgMail").val();
+          let obj = {
+            type : "get",
+            url : "/send-email",
+            data : {
+              toMail:email,
+              subMail:subject,
+              msgMail:message
+            }
+          }
+          $.ajax(obj).done(function(response){
+                  alert(response);
+                }).fail(function(err){
+                  alert("Server Error");
+                })
+        });
+        $("#btn-subscribe").click(function(req,resp){
+          alert("Email Saved");
+          $("#newsletter1").val('');
+        });
+        /*
+        $("#txtmail").change(function(req,resp){
+          let email = $(this).val();
+          
+          let obj = {
+            type : "get",
+            url : "/check-email",
+            data : {
+              txtMail:email,
+            }
+          }
+          $.ajax(obj).done(function(response){
+                  if(response.length==1)
+                  alert("Email Already Taken");
+                else
+                alert("Email Available");
+                  console.log(response);
+                 
+                }).fail(function(err){
+                  alert("Server Error");
+                })
+        });
+        */
+      })
+    </script>
+    
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg" style="background-color: #01579B;">
+    <div class="container-fluid">
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="#">
+          <img src="./uploads/logo22.png" alt="" width="40px" height="40px" style="margin-right: 10px;">
+            
+            Tourney
+        </a>
+
+        <!-- Collapsible Navbar Content -->
+        <div class="collapse navbar-collapse">
+            <!-- Navigation Links -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" style="color: white;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#aboutUs">About Us</a>
+                </li>
+                
+            </ul>
+            <!-- Right-Aligned Buttons -->
+            <div class="d-flex">
+                <button class="btn  me-2 custom-btn" type="button" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+                <button class="btn  custom-btn" type="button" data-bs-toggle="modal" data-bs-target="#loginmodal">Login</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+
+  <!-- sign up modal-->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="txtmail" class="form-label" >Enter email</label>
+            <input type="email" class="form-control" id="txtmail" placeholder="xyz@gmail.com" name="txtmail" required>
+          </div>
+          <div class="mb-3">
+            <label for="formGroupExampleInput2" class="form-label" >Enter Password</label>
+            <input type="password" class="form-control" id="txtpwd" placeholder="**********" name="txtpwd" required>
+            <p>Enter User Type</p>
+            <input class="form-check-input" type="radio"  id="user" name="user" value="Organization">
+  <label class="form-check-label" for="flexRadioDefault1">
+    Organization
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio"  id="user" name="user" value="Player">
+  <label class="form-check-label" for="flexRadioDefault2">
+    Player
+  </label>
+          </div>
+          
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="btn-signup" >Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--End of Signup Modal-->
+
+
+  <!--Login Modal-->
+  <div class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Login</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="formGroupExampleInput" class="form-label" >Enter email</label>
+            <input type="email" class="form-control" id="login-txtmail" placeholder="xyz@gmail.com" name="txtmail">
+          </div>
+          <div class="mb-3">
+            <label for="formGroupExampleInput2" class="form-label" >Enter Password</label>
+            <input type="password" class="form-control" id="login-txtpwd" placeholder="**********" name="txtpwd">
+           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" id="btn-login" >Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--End of Login Modal-->
+
+
+<!-- Crousel -->
+ 
+<div id="carouselExampleCaptions" class="carousel slide " >
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="../uploads/poster_1.jpg" class="d-block w-100" alt="..." height="600">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="../uploads/poster_2.jpg" class="d-block w-100" alt="..." height="600">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div> 
+    <div class="carousel-item">
+      <img src="../uploads/poster_3.jpg" class="d-block w-100" alt="..." height="600">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- Services -->
+
+<section class="services-section" id="services">
+  <h2 class="section-heading">Our Services</h2>
+  <div class="services-container">
+      <!-- Card 1 -->
+      <div class="service-card">
+          <img src="../uploads/13.jpg" alt="Service 1" class="service-icon">
+          <h3>Find Tournaments</h3>
+          <p>Search for tournaments by location and game</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="service-card">
+          <img src="../uploads/12.jpg" alt="Service 2" class="service-icon">
+          <h3> Host a Tournament</h3>
+          <p>Publish your tournament and attract participants</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="service-card">
+          <img src="../uploads/14.jpg" alt="Service 3" class="service-icon">
+          <h3>Personalized Dashboards</h3>
+          <p>Access a dedicated dashboard tailored for players and organizations</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="service-card">
+          <img src="../uploads/16.png"  alt="Service 4" class="service-icon">
+          <h3>Stay Updated with Insights</h3>
+          <p>Get all the details you need, including dates, venues, and entry fees</p>
+      </div>
+  </div>
+</section>
+<!--12121212-->
+<section class="contact-section">
+ 
+
+  <!-- Mail Us Section -->
+  <h2 class="section-heading" id="reachUs">Reach Us</h2>
+  <div class="contact-container">
+      <!-- Mail Form -->
+      <div class="contact-card">
+          <h3>Email Us</h3>
+          <form  >
+              <label for="toMail">Your Email:</label><br>
+              <input type="email" id="toMail" name="toMail" required><br><br>
+
+              <label for="subMail">Subject:</label><br>
+              <input type="text" id="subMail" name="subMail" required><br><br>
+
+              <label for="msgMail">Message:</label><br>
+              <textarea id="msgMail" name="msgMail" required></textarea><br><br>
+
+              <button type="button" id="btn-mail">Send Email</button>
+          </form>
+      </div>
+
+      <!-- Iframe for Mail or Contact Information -->
+      <div class="contact-card">
+          <h3>Mailing Address</h3>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.9896572684215!2d144.9631585!3d-37.8136277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5e122d5b63%3A0x5045675218cd990!2zU29tZSBQbGFjZSBPZmZpY2UgQmx2ZSB3cml0ZXIsIE1pc3RhcnkgQ3JlZWsgU3RvY2s!5e0!3m2!1sen!2sus!4v1588104812981!5m2!1sen!2sus" 
+          width="450" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+   </div>
+  </div>
+</section>
+
+
+
+<!--dfdfdfdfdf
+<div style="text-align: center; margin-top: 40px; margin-bottom: 40px;">
+  <div><h3>Reach Us </h3></div>
+  <div><h3>Feel free to Mail Us</h3></div>
+</div>
+<div class="container">
+<div class="container row lg-3">
+  <div class="col-md-5"> 
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.8170355319508!2d74.95375757556027!3d30.213769074838652!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a37a147d93%3A0xef480ed6ce926c!2sAjit%20Rd%2C%20Bathinda%2C%20Punjab%20151001!5e0!3m2!1sen!2sin!4v1731744111002!5m2!1sen!2sin" width="500" height="400" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        
+        </iframe>
+  </div>
+  
+
+  <div class="col-md-1">
+
+  </div>
+
+
+  <div class="col-md-6">
+    <form class="row mt-2">
+      <div class="col-md-12">
+        <label for="inputEmail4" class="form-label">Email</label>
+        <input type="email" class="form-control" id="inputEmail4">
+      </div>
+      <div class="col-md-12">
+        <label for="inputPassword4" class="form-label">Address</label>
+        <input type="password" class="form-control" id="inputPassword4">
+      </div>
+      <div class="col-md-6">
+        <label for="inputAddress" class="form-label">City</label>
+        <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+      </div>
+      <div class="col-6">
+        <label for="inputAddress2" class="form-label">Contact Number</label>
+        <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+      </div>
+      <div class="col-md-12">
+        <label for="floatingTextarea">Comments</label>
+        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+      </div>
+        <div class="col-12">
+        <button type="submit" class="btn btn-primary mt-3">Send</button>
+      </div>
+    </form>
+    <h3 class="mt-5">Get in touch <i class="fa-brands fa-linkedin"></i> <i class="fa-brands fa-square-instagram"></i> <i class="fa-brands fa-facebook"></i><i class="fa-solid fa-phone"></i></h3>
+    
+  </div>
+  
+</div>
+</div>
+-->
+<!-- About us -->
+
+<section class="about-us-section" id="aboutUs">
+  <h2 class="section-heading">About Us</h2>
+  <div id="aboutCarousel" class="carousel slide" data-bs-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+          <li data-bs-target="#aboutCarousel" data-bs-slide-to="0" class="active"></li>
+          <li data-bs-target="#aboutCarousel" data-bs-slide-to="1"></li>
+      </ol>
+
+      <!-- Carousel Content -->
+      <div class="carousel-inner">
+          <!-- Developer 1 Card -->
+          <div class="carousel-item active">
+              <div class="about-card">
+                  <img src="./uploads/pik2.png" alt="Developer 1" class="about-image">
+                  <h3>Developer 1</h3>
+                  <h5>Resham Singh</h5>
+                  <p>Web Developer (HTML, CSS, Bootstrap, JS, JQuery, Node JS, Express JS)</p>
+              </div>
+          </div>
+          <!-- Developer 2 Card -->
+          <div class="carousel-item">
+              <div class="about-card">
+                  <img src="./uploads/pik23.png" alt="Developer 2" class="about-image">
+                  <h3>Developer 2</h3>
+                  <h5>Akashdeep Singh</h5>
+                  <p>Web Developer (HTML, CSS, Bootstrap, JS, JQuery, Node JS, Express JS)</p>
+                  <!--<p>Back-End Developer passionate about building scalable and efficient systems using Node.js and database technologies.</p>
+              -->
+                </div>
+          </div>
+      </div>
+
+      <!-- Carousel Controls -->
+      <a class="carousel-control-prev" href="#aboutCarousel" role="button" data-bs-slide="prev">
+          <span class="custom-arrow prev-arrow" aria-hidden="true">&#8592;</span>
+          <span class="visually-hidden">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#aboutCarousel" role="button" data-bs-slide="next">
+          <span class="custom-arrow next-arrow" aria-hidden="true">&#8594;</span>
+          <span class="visually-hidden">Next</span>
+      </a>
+  </div>
+</section>
+
+
+
+
+ <!--About us 2
+<h3 style="text-align: center; margin-bottom: 40px;">About Us</h3>
+ <div class="container">
+  <div class="row">
+<div class="card" style="width: 20rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+<div class="card" style="width: 20rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+</div>
+</div>
+-->
+
+
+<!-- Footer 2-->
+
+<div class="container">
+<footer class="py-5">
+  <div class="row">
+    <div class="col-6 col-md-2 mb-3">
+      <h5>Section</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+        <li class="nav-item mb-2"><a href="#services" class="nav-link p-0 text-body-secondary">Features</a></li>
+        <li class="nav-item mb-2"><a href="#reachUs" class="nav-link p-0 text-body-secondary">Reach Us</a></li>
+        <li class="nav-item mb-2"><a href="#aboutUs" class="nav-link p-0 text-body-secondary">About Us</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+      </ul>
+    </div>
+
+    <div class="col-6 col-md-2 mb-3">
+      <h5>Services</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Explore Tournaments</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Host Tournaments</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Win Prizes</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Certifications</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Secure SignUp/Login</a></li>
+      </ul>
+    </div>
+
+    
+    <div class="col-6 col-md-2 mb-3">
+      <h5>Developers</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Resham Singh</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Akashdeep Singh</a></li>
+      
+      </ul>
+    </div>
+
+
+    <div class="col-md-5 offset-md-1 mb-3">
+      <form>
+        <h5>Subscribe to our newsletter</h5>
+        <p>Monthly digest of what's new and exciting from us.</p>
+        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+          <label for="newsletter1" class="visually-hidden">Email address</label>
+          <input id="newsletter1" type="email" class="form-control" placeholder="Email address" >
+          <div class="invalid-feedback">
+            Please enter a valid email address.
+        </div>
+          <button class="btn btn-primary" type="button" id="btn-subscribe">Subscribe</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+    <p>© 2024 Company, Inc. All rights reserved.</p>
+    <ul class="list-unstyled d-flex">
+      <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+      <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+      <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+    </ul>
+  </div>
+</footer>
+</div>
+
+<!----------------------------------------------->
+</body>
+</html>

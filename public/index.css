@@ -1,0 +1,247 @@
+.custom-btn {
+    background-color: white;       /* Default button background */
+    color: #01579B;                /* Text color matches the deep blue */
+    border: none;     /* Border matches the text color */
+   /* border-radius: 5px;            /* Slightly rounded edges */
+    font-weight: bold;             /* Emphasized text */
+    padding: 8px 16px;             /* Comfortable padding */
+    transition: all 0.3s ease;     /* Smooth hover effect */
+    font-size: 1.1rem;          /* Increase button text size */
+    padding: 10px 20px; 
+}
+
+.custom-btn:hover {
+    background-color: #01579B;     /* Matches the deep blue text color */
+    color: white;                  /* Text changes to white to match background */
+    border: 2px solid white;       /* Border reverses to white */
+}
+
+
+.navbar {
+    height: 80px;               /* Adjust height of the navbar */
+    padding: 15px 20px;         /* Add padding for content spacing */
+    font-size: 1.2rem;          /* Increase font size for text */
+}
+
+.navbar a{
+    color: white;
+}
+.navbar .navbar-brand {
+    font-size: 1.5rem;  
+    font-family:Verdana, Geneva, Tahoma, sans-serif;        /* Enlarge the brand text/logo */
+}
+
+.navbar .nav-link {
+    padding: 8px 12px;          /* Add spacing around nav links */
+}
+
+/* Styling for the Our Services section */
+.our-services {
+    background-color: #01579B; /* Deep blue background */
+    color: white;             /* Text color white by default */
+    padding: 10px 0;          /* Top and bottom padding */
+    text-align: center;       /* Center-align the text */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+ 
+}
+
+/* Styling for the heading */
+.our-services h2 {
+    font-size: 2.5rem;        /* Large font size for the heading */
+    margin: 0;                /* Remove default margin */
+    padding: 10px;            /* Padding around the text */
+    display: inline-block;    /* Inline-block for hover area control */
+    border-radius: 10px;      /* Rounded corners for the hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect */
+.our-services h2:hover {
+    background-color: white; /* Change background to white on hover */
+    color: #01579B;          /* Change text color to deep blue on hover */
+}
+
+/* Section Styling */
+.services-section {
+    background-color: #01579B; /* Deep blue background */
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+/* Container Styling */
+.services-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Card Styling */
+.service-card {
+    background-color: #ffffff; /* White background for cards */
+    color: #01579B;           /* Deep blue text */
+    border-radius: 10px;
+    padding: 20px;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Card Image */
+.service-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+}
+
+/* Card Hover Effect */
+.service-card:hover {
+    transform: translateY(-10px); /* Lift the card slightly */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a stronger shadow */
+    background-color: #01579B; /* Change background to deep blue */
+    color: white;              /* Text changes to white */
+}
+
+
+/* Section Styling for Both "Reach Us" and "Mail Us" */
+.contact-section {
+    background-color: #01579B; /* Deep blue background */
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+/* Container Styling */
+.contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Card Styling for Contact Info */
+.contact-card {
+    background-color: #ffffff; /* White background for cards */
+    color: #01579B;            /* Deep blue text */
+    border-radius: 10px;
+    padding: 20px;
+    width: 550px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Form Inputs Styling */
+.contact-card input, .contact-card textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Button Styling */
+.contact-card button {
+    padding: 10px 20px;
+    background-color: #01579B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact-card button:hover {
+    background-color: #013F73;
+}
+
+/* Icon Styling (optional) */
+.service-icon {
+    font-size: 3rem;
+    color: #01579B;
+    margin-bottom: 15px;
+}
+
+/* Hover Effects for Cards */
+.contact-card:hover {
+    transform: translateY(-10px); /* Lift the card slightly */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+    background-color: #01579B; /* Background changes to deep blue */
+    color: white;              /* Text turns white */
+}
+
+
+/* About Us Section Styling */
+.about-us-section {
+    background-color: #01579B; /* Deep blue background */
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+}
+
+/* Card Styling */
+.about-card {
+    background-color: white;
+    color: #01579B;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-10px); /* Lift on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+/* Image Styling */
+.about-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Arrows for Carousel Controls */
+.custom-arrow {
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.custom-arrow:hover {
+    color: #FFD700; /* Gold color on hover */
+}
+
+.prev-arrow {
+    position: absolute;
+    left: 10px;
+}
+
+.next-arrow {
+    position: absolute;
+    right: 10px;
+}

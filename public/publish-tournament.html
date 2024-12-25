@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publish Tournament</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="./index.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function(){
+
+            if(localStorage.getItem("activeUser")==null)
+            {
+            location.href="index.html";
+            return;
+            }
+            else{
+            //alert(localStorage.getItem("activeUser"));
+            $("#activeUser").html(localStorage.getItem("activeUser"));
+            $("#txtmail").val(localStorage.getItem("activeUser")).attr("readonly",true);
+            }
+        });
+    </script>
+   <!-- <script>
+        $(document).ready(function(){
+            $("#btn-save").click(function(){
+                let email = $("#txtmail").val();
+                let title = $("#txttitle").val();
+                let game = $("#txtgame").val();
+                let fee = $("#txtfee").val();
+                let date = $("#txtloc").val();
+            })
+        })
+    </script>
+-->
+</head>
+<body>
+  <!--Nav Bar-->
+  <nav class="navbar navbar-expand-lg" style="background-color: #01579B;">
+    <div class="container-fluid">
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="#">
+          <img src="./uploads/logo22.png" alt="" width="40px" height="40px" style="margin-right: 10px;">
+            
+            Tourney
+        </a>
+
+        <!-- Collapsible Navbar Content -->
+        <div class="collapse navbar-collapse">
+            <!-- Navigation Links -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                
+            </ul>
+            <!-- Right-Aligned Buttons -->
+            <div class="d-flex">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4">User :
+                    <span id="activeUser"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</nav>
+  <!--/////////////////////////-->
+
+    <center>
+      <br>
+    <h1>Publish Tournament</h1>
+</center>
+<br>
+    <div class="container">
+        <form class="row g-3" action="/insert-tournaments" enctype="multipart/form-data" method="post">
+            <div class="col-md-6">
+              <label for="txtmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="txtmail" name="txtmail">
+            </div>
+            
+            <div class="row">
+            <div class="col-md-6">
+              <label for="txttitle" class="form-label">Title</label>
+              <input type="text" class="form-control" id="txttitle" name="txttitle">
+            </div>
+            <div class="col-md-3">
+                <label for="txtgame" class="form-label">Game</label>
+                <input type="text" class="form-control" id="txtgame" name="txtgame">
+              </div>
+              <div class="col-md-3">
+                <label for="txtfee" class="form-label">Entry Fee</label>
+                <input type="text" class="form-control" id="txtfee" name="txtfee">
+              </div>
+        </div>
+            <div class="col-4">
+              <label for="txtdate" class="form-label">Date</label>
+              <input type="date" class="form-control" id="txtdate" name="txtdate">
+            </div>
+            
+            <div class="col-md-4">
+              <label for="txtcity" class="form-label">City</label>
+              <input type="text" class="form-control" id="txtcity" name="txtcity">
+            </div>
+            <div class="col-md-4">
+                <label for="txtloc" class="form-label">Location</label>
+                <input type="text" class="form-control" id="txtloc" name="txtloc">
+              </div>
+            
+            
+                <div class="col-md-6">
+                    <label for="posterpic" class="form-label">Upload File</label>
+                    <input type="file" class="form-control" id="posterpic" name="posterpic">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="txtprizes" class="form-label">Prizes</label>
+                    <input type="text" class="form-control" id="txtprizes" name="txtprizes">
+                  </div>
+            
+                <div class="col-md-12">
+                    <label for="txtinfo" class="form-label">Other Information</label>
+                    <textarea class="form-control" id="txtinfo" name="txtinfo"></textarea>
+                  </div>
+    
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Accept agreements
+                </label>
+              </div>
+            </div>
+            <div class="col-2">
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            
+          </form>
+        </div>
+
+        <!-- Footer 2-->
+
+<div class="container">
+  <footer class="py-5">
+    <div class="row">
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+          <li class="nav-item mb-2"><a href="#services" class="nav-link p-0 text-body-secondary">Features</a></li>
+          <li class="nav-item mb-2"><a href="#reachUs" class="nav-link p-0 text-body-secondary">Reach Us</a></li>
+          <li class="nav-item mb-2"><a href="#aboutUs" class="nav-link p-0 text-body-secondary">About Us</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+        </ul>
+      </div>
+  
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Services</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Explore Tournaments</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Host Tournaments</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Win Prizes</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Certifications</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Secure SignUp/Login</a></li>
+        </ul>
+      </div>
+  
+      
+      <div class="col-6 col-md-2 mb-3">
+        <h5>Developers</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Resham Singh</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Akashdeep Singh</a></li>
+        
+        </ul>
+      </div>
+  
+  
+      <div class="col-md-5 offset-md-1 mb-3">
+        <form>
+          <h5>Subscribe to our newsletter</h5>
+          <p>Monthly digest of what's new and exciting from us.</p>
+          <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+            <label for="newsletter1" class="visually-hidden">Email address</label>
+            <input id="newsletter1" type="email" class="form-control" placeholder="Email address" >
+            <div class="invalid-feedback">
+              Please enter a valid email address.
+          </div>
+            <button class="btn btn-primary" type="button" id="btn-subscribe">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  
+    <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+      <p>© 2024 Company, Inc. All rights reserved.</p>
+      <ul class="list-unstyled d-flex">
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="link-body-emphasis" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </div>
+  </footer>
+  </div>
+  
+  <!----------------------------------------------->
+
+</body>
+</html>
