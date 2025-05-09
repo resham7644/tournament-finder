@@ -3,6 +3,7 @@ var fileuploader = require("express-fileupload");
 var app = express();
 var cloudinary = require("cloudinary").v2;
 const nodemailer = require('nodemailer');
+require("dotenv").config();
 
 const transporter = nodemailer.createTransport(
     {
@@ -10,8 +11,8 @@ const transporter = nodemailer.createTransport(
         host:'smtp.gmail.com',
         port:465,
         auth:{
-            user:'resham7644@gmail.com',
-            pass:'wguzmijuhjzksxbw',
+            user:process.env.MAIL,
+            pass:process.env.MAIL_PASS,
         }
 
     }
@@ -66,14 +67,14 @@ app.get("/signup-email", async (req, res) => {
 });
 
 var mysql2 = require("mysql2");
-let config = "mysql://avnadmin:AVNS_mCY4C3thg3hpDN2o3pB@mysql-f0cad86-resham7644-7422.e.aivencloud.com:18311/defaultdb";
+let config = process.env.DB_HOST;
 
 var mysql = mysql2.createConnection(config);
 
 cloudinary.config({ 
-    cloud_name: 'doeunlxxa', 
-    api_key: '875193351841854', 
-    api_secret: 'u6wtPrtZ6rTvDFC0hUiT7aenc9o' // Click 'View API Keys' above to copy your API secret
+    cloud_name: process.env.CLOUD_USER, 
+    api_key: process.env.CLOUD_KEY, 
+    api_secret: process.env.CLOUD_PASS 
 });
 
 mysql.connect(function(err){
@@ -83,7 +84,7 @@ mysql.connect(function(err){
         console.log(err.message+"######");
 })
 
-app.listen(7644,function(){
+app.listen(process.env.PORT,function(){
     console.log("Server Started");
 })
 
