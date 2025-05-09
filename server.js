@@ -100,12 +100,19 @@ app.get("/find-tournaments",function(req,resp){
 })
 app.get("/signup",function(req,resp){
     
-    mysql.query("insert into userss values(?,?,?)",[req.query.txtmail,req.query.txtpwd,req.query.utype],function(err){
-        if(err==null)
-            resp.send("Record Saved");
-        else
-        resp.send(err.message);
-    })
+    mysql.query(
+        "INSERT INTO userss (email, password, utype) VALUES (?, ?, ?)",
+        [req.query.txtmail, req.query.txtpwd, req.query.utype],
+        function (err) {
+            if (err) {
+                console.log(err.message);
+                resp.send(err.message);
+            } else {
+                resp.send("Record Saved");
+            }
+        }
+    );
+    
 });
 
 app.get("/check-email",function(req,resp){
@@ -231,7 +238,7 @@ app.post("/update-profile",async function(req,resp){
 });
 app.get("/fetch-profile",function(req,resp){
     let email = req.query.txtmail;
-    console.log("Email received:", email);
+   // console.log("Email received:", email);
 
     mysql.query("select * from orga_profile where email=?",[email],function(err,jsonArray)
     {

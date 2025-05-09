@@ -84,7 +84,7 @@
                 })
                 .fail(function(err) {
                      console.log("Error details:", err.message);
-                     alert("Server Error");
+                     alert(JSON.stringify(err.message));
                 })
         }
     });
@@ -174,7 +174,7 @@
             $("#login-txtmail").val('');
             $("#login-txtpwd").val('');
           }).fail(function(err){
-            alert("Server Error");
+            alert(err.message);
           })
         });
         $("#btn-mail").click(function(){
@@ -512,28 +512,28 @@
                   <p>Web Developer (HTML, CSS, Bootstrap, JS, JQuery, Node JS, Express JS)</p>
               </div>
           </div>
-          <!-- Developer 2 Card -->
+          <!-- Developer 2 Card
           <div class="carousel-item">
               <div class="about-card">
                   <img src="./uploads/pik23.png" alt="Developer 2" class="about-image">
                   <h3>Developer 2</h3>
                   <h5>Akashdeep Singh</h5>
                   <p>Web Developer (HTML, CSS, Bootstrap, JS, JQuery, Node JS, Express JS)</p>
-                  <!--<p>Back-End Developer passionate about building scalable and efficient systems using Node.js and database technologies.</p>
-              -->
+                  <p>Back-End Developer passionate about building scalable and efficient systems using Node.js and database technologies.</p>
+              
                 </div>
-          </div>
+          </div> -->
       </div>
 
       <!-- Carousel Controls -->
-      <a class="carousel-control-prev" href="#aboutCarousel" role="button" data-bs-slide="prev">
+      <!-- <a class="carousel-control-prev" href="#aboutCarousel" role="button" data-bs-slide="prev">
           <span class="custom-arrow prev-arrow" aria-hidden="true">&#8592;</span>
           <span class="visually-hidden">Previous</span>
       </a>
       <a class="carousel-control-next" href="#aboutCarousel" role="button" data-bs-slide="next">
           <span class="custom-arrow next-arrow" aria-hidden="true">&#8594;</span>
           <span class="visually-hidden">Next</span>
-      </a>
+      </a> -->
   </div>
 </section>
 
