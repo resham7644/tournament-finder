@@ -102,7 +102,7 @@ app.get("/find-tournaments",function(req,resp){
 app.get("/signup",function(req,resp){
     
     mysql.query(
-        "INSERT INTO userss (email, password, utype) VALUES (?, ?, ?)",
+        "INSERT INTO userss (email, password, User) VALUES (?, ?, ?)",
         [req.query.txtmail, req.query.txtpwd, req.query.utype],
         function (err) {
             if (err) {
